@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: xelBrownBricks
+  title: Brown Bricks [REUPLOAD]
+  author: Mirage Xel, Pruz
+  description: "From Minecraft.\n\nThis is a reupload of Pantopes's module with changes
+    and bug fixes. Unsubscribe from the old version here:\r\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2178596568\n\nBrown
+    Bricks regular module by Mirage Xel.\nManual/Idea by Pruz.\nModule ID: xelBrownBricks\nTEMP
+    MANUAL URL: https://docs.google.com/document/d/1qFPypDWSjrQathVBRV4-lCmzxOeFfgnvIChDNT0Ny5w/edit?usp=sharing"
+  version: 1.5.1
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: 956b7f194e9b58c4dbb9d7150387cb4b, type: 3}
