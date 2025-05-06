@@ -46,6 +46,7 @@ public class BrownBricks : MonoBehaviour
     private bool _moduleSolved;
 
     private int _answerBrickPos;
+    private BlockType[] _brickPositions;
 
     enum BlockType
     {
@@ -71,28 +72,30 @@ public class BrownBricks : MonoBehaviour
 
     void GenerateBricks()
     {
-        var brickPositions = Enumerable.Range(0, 5).Select(i => (BlockType)i).ToArray().Shuffle();
+        _brickPositions = Enumerable.Range(0, 5).Select(i => (BlockType)i).ToArray().Shuffle();
         for (int i = 0; i < 4; i++)
-            BrickRenderers[i].material.mainTexture = BrickTextures[(int)brickPositions[i]];
+            BrickRenderers[i].material.mainTexture = BrickTextures[(int)_brickPositions[i]];
 
-        var missingBrick = brickPositions[4];
+        var missingBrick = _brickPositions[4];
         var positionToLookAt = (int)_missingBrickIxs[(int)missingBrick];
-        var lookBrick = _lookBrickIxs[(int)brickPositions[positionToLookAt]];
+        var lookBrick = _lookBrickIxs[(int)_brickPositions[positionToLookAt]];
+        var lookBrickPos = Array.IndexOf(_brickPositions, lookBrick);
         BlockType answerBrick;
-        if (missingBrick == _answerLookup[(int)lookBrick][0][0])
-            answerBrick = _answerLookup[(int)lookBrick][1][0];
 
-        else if (lookBrick == _answerLookup[(int)lookBrick][0][1])
-            answerBrick = _answerLookup[(int)lookBrick][1][1];
+        if (missingBrick == _answerLookup[lookBrickPos][0][0])
+            answerBrick = _answerLookup[lookBrickPos][1][0];
+
+        else if (lookBrick == _answerLookup[lookBrickPos][0][1])
+            answerBrick = _answerLookup[lookBrickPos][1][1];
         else
-            answerBrick = _answerLookup[(int)lookBrick][1][2];
+            answerBrick = _answerLookup[lookBrickPos][1][2];
 
         if (missingBrick == answerBrick)
-            answerBrick = _answerLookup[(int)lookBrick][1][3];
+            answerBrick = _answerLookup[lookBrickPos][1][3];
 
-        _answerBrickPos = Array.IndexOf(brickPositions, answerBrick);
+        _answerBrickPos = Array.IndexOf(_brickPositions, answerBrick);
 
-        Debug.LogFormat("[Brown Bricks #{0}] The blocks in order are {1}, and {2}.", _moduleId, Enumerable.Range(0, 3).Select(i => brickPositions[i]).Join(", "), brickPositions[3]);
+        Debug.LogFormat("[Brown Bricks #{0}] The blocks in order are {1}, and {2}.", _moduleId, Enumerable.Range(0, 3).Select(i => _brickPositions[i]).Join(", "), _brickPositions[3]);
         Debug.LogFormat("[Brown Bricks #{0}] The missing block is {1}.", _moduleId, missingBrick);
         Debug.LogFormat("[Brown Bricks #{0}] The block to identify is at the {1} position.", _moduleId, _positionNames[positionToLookAt]);
         Debug.LogFormat("[Brown Bricks #{0}] The >LOOK> block that has been transcribed to is {1}.", _moduleId, lookBrick);
@@ -109,13 +112,13 @@ public class BrownBricks : MonoBehaviour
             BrickSels[brick].AddInteractionPunch(.5f);
             if (brick == _answerBrickPos)
             {
-                Debug.LogFormat("[Brown Bricks #{0}] That was correct. Module solved.", _moduleId);
+                Debug.LogFormat("[Brown Bricks #{0}] Pressing {1} was correct. Module solved.", _moduleId, _brickPositions[brick]);
                 _moduleSolved = true;
                 Module.HandlePass();
             }
             else
             {
-                Debug.LogFormat("[Brown Bricks #{0}] That was incorrect. Strike!", _moduleId);
+                Debug.LogFormat("[Brown Bricks #{0}] Pressing {1} was incorrect. Strike!", _moduleId, _brickPositions[brick]);
                 Module.HandleStrike();
                 GenerateBricks();
             }
